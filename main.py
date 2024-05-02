@@ -63,9 +63,7 @@ def main():
     
     i = 1
     for (root2, dirs2, files2) in os.walk(image_list_path):
-    #     # dirs1 = sorted(dirs1)
         files2 = sorted(files2)
-    #     # print(dirs1)
         for file2 in files2:
             mkdir(f"{output_path}/{i}")
             mapper(database_path, image_path,f"{output_path}/{i}",os.path.join(root2, file2))
@@ -84,7 +82,7 @@ def main():
                 image_undistorter(image_path, f"{output_path}/{i}/1", f"{output_path}/{i}/undistorted")
             else:
                 image_undistorter(image_path, f"{output_path}/{i}/0", f"{output_path}/{i}/undistorted")
-            convert_colmap_bin_to_txt(f"{output_path}/{i}/undistorted/sparse", f"{output_path}/{i}/undistorted")
+            convert_colmap_bin_to_txt(f"{output_path}/{i}/undistorted/sparse/0", f"{output_path}/{i}/undistorted")
             export_model_to_ply(f"{output_path}/{i}/undistorted/sparse", f"{output_ply}/{i}.ply")
             
             i+=1
@@ -100,10 +98,20 @@ def main():
         matrixs[k+1] = np.dot(matrixs[k],matrixs[k+1])
     #이제 matrix들은 준비 된거임.
     
+    for i in range(len(matrixs)):
+        path = f'./matrix/{i+2}.txt'
+        with open(path, 'w') as file:
+            for row in matrixs[i]:
+                for num in row:
+                    file.write(str(num) + '\t')
+                file.write('\n')
+                
+            
 
     for f in range(len(matrixs)):
         print(matrixs[f])
     print("-------------------------")
+    print(f"number of sub model: {submodel_image_num - 1}")
 
 
 
