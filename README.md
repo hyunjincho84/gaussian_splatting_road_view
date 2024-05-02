@@ -8,7 +8,7 @@ before you do the "python3 main.py" command
 you have to do these command
 
 ```
-export LD_LIBRARY_PATH=/home/mrlab/Meshroom-2023.3.0/aliceVision/lib/
+export LD_LIBRARY_PATH=/path/to/Meshroom-2023.3.0/aliceVision/lib/
 
-export ALICEVISION_ROOT=/home/mrlab/Meshroom-2023.3.0/aliceVision
+export ALICEVISION_ROOT=/path/to/Meshroom-2023.3.0/aliceVision
 ```
