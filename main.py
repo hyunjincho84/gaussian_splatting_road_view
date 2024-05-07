@@ -18,7 +18,7 @@ def count_subdirectories(path):
 
 def main():
     #colmap에서 만들어지는 database pwd
-    database_path = './database/database.db'
+    database_path = 'database.db'
 
     #8방위로 찢은 이미지 dir
     image_path = './8_dir_frames'
@@ -34,17 +34,18 @@ def main():
     
     path_to_meshroom = '/home/mrlab/Meshroom-2023.3.0/aliceVision/bin/./aliceVision_split360Images'
     
-    image_num = vid_to_img(sys.argv[1],save_360_frames_path)
+    # image_num = vid_to_img(sys.argv[1],save_360_frames_path)
     
-    print("!!!done splitting frames!!!")
+    # print("!!!done splitting frames!!!")
 
-    # 360split하는거
-    split360_images(path_to_meshroom, save_360_frames_path, './', image_path)
-    print("!!!done splitting 360 images!!!")
+    # # 360split하는거
+    # split360_images(path_to_meshroom, save_360_frames_path, './', image_path)
+    # print("!!!done splitting 360 images!!!")
     
     
     #data split을 해줌
-    total_image_num = 135 * 8
+    ##############327 image_num으로 무조건 바꿔야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    total_image_num = 327 * 8
     submodel_image_num = 320
     merge_num = 80
     tmp = submodel_image_num
@@ -58,15 +59,23 @@ def main():
     print("!!!done creating submodel text files!!!")
     
     
-    feature_extractor(database_path, image_path)
-    exhaustive_matcher(database_path)
+    
+    def extract_number(filename):
+        # 파일 이름에서 숫자 부분만 추출
+        number = ''.join([char for char in filename if char.isdigit()])
+        return int(number) if number else 0
+
     
     i = 1
     for (root2, dirs2, files2) in os.walk(image_list_path):
-        files2 = sorted(files2)
+        files2 = sorted(files2, key=extract_number)
         for file2 in files2:
-            mkdir(f"{output_path}/{i}")
-            mapper(database_path, image_path,f"{output_path}/{i}",os.path.join(root2, file2))
+            # mkdir(f"{output_path}/{i}")
+            # print(f"makeing progress with {i}th submodel...")
+            # feature_extractor(f"{output_path}/{i}/{database_path}", image_path, os.path.join(root2, file2))
+            # print(f"makeing progress with {i}th submodel...")
+            # exhaustive_matcher(f"{output_path}/{i}/{database_path}")
+            # mapper(f"{output_path}/{i}/{database_path}", image_path,f"{output_path}/{i}",os.path.join(root2, file2))
             print("***************")
             print("***************")
             print("***************")
@@ -78,12 +87,13 @@ def main():
             print("***************")
             print("***************")
             print("***************")
-            if count_subdirectories(f"{output_path}/{i}") == 2:
-                image_undistorter(image_path, f"{output_path}/{i}/1", f"{output_path}/{i}/undistorted")
-            else:
-                image_undistorter(image_path, f"{output_path}/{i}/0", f"{output_path}/{i}/undistorted")
-            convert_colmap_bin_to_txt(f"{output_path}/{i}/undistorted/sparse/0", f"{output_path}/{i}/undistorted")
-            export_model_to_ply(f"{output_path}/{i}/undistorted/sparse", f"{output_ply}/{i}.ply")
+            # a = count_subdirectories(f"{output_path}/{i}")
+            # if a >= 2:
+            #     image_undistorter(image_path, f"{output_path}/{i}/{a-1}", f"{output_path}/{i}/undistorted",os.path.join(root2, file2))
+            # else:
+            #     image_undistorter(image_path, f"{output_path}/{i}/0", f"{output_path}/{i}/undistorted", os.path.join(root2, file2))
+            # convert_colmap_bin_to_txt(f"{output_path}/{i}/undistorted/sparse/0", f"{output_path}/{i}/undistorted")
+            # export_model_to_ply(f"{output_path}/{i}/undistorted/sparse/0", f"{output_ply}/{i}.ply")
             
             i+=1
 
@@ -111,7 +121,6 @@ def main():
     for f in range(len(matrixs)):
         print(matrixs[f])
     print("-------------------------")
-    print(f"number of sub model: {submodel_image_num - 1}")
 
 
 
