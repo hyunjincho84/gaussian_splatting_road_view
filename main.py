@@ -34,18 +34,18 @@ def main():
     
     path_to_meshroom = '/home/mrlab/Meshroom-2023.3.0/aliceVision/bin/./aliceVision_split360Images'
     
-    # image_num = vid_to_img(sys.argv[1],save_360_frames_path)
+    image_num = vid_to_img(sys.argv[1],save_360_frames_path)
     
-    # print("!!!done splitting frames!!!")
+    print("!!!done splitting frames!!!")
 
     # # 360split하는거
-    # split360_images(path_to_meshroom, save_360_frames_path, './', image_path)
-    # print("!!!done splitting 360 images!!!")
+    split360_images(path_to_meshroom, save_360_frames_path, './', image_path)
+    print("!!!done splitting 360 images!!!")
     
     
     #data split을 해줌
     ##############327 image_num으로 무조건 바꿔야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    total_image_num = 327 * 8
+    total_image_num = image_num * 8
     submodel_image_num = 320
     merge_num = 80
     tmp = submodel_image_num
@@ -70,12 +70,12 @@ def main():
     for (root2, dirs2, files2) in os.walk(image_list_path):
         files2 = sorted(files2, key=extract_number)
         for file2 in files2:
-            # mkdir(f"{output_path}/{i}")
-            # print(f"makeing progress with {i}th submodel...")
-            # feature_extractor(f"{output_path}/{i}/{database_path}", image_path, os.path.join(root2, file2))
-            # print(f"makeing progress with {i}th submodel...")
-            # exhaustive_matcher(f"{output_path}/{i}/{database_path}")
-            # mapper(f"{output_path}/{i}/{database_path}", image_path,f"{output_path}/{i}",os.path.join(root2, file2))
+            mkdir(f"{output_path}/{i}")
+            print(f"makeing progress with {i}th submodel...")
+            feature_extractor(f"{output_path}/{i}/{database_path}", image_path, os.path.join(root2, file2))
+            print(f"makeing progress with {i}th submodel...")
+            exhaustive_matcher(f"{output_path}/{i}/{database_path}")
+            mapper(f"{output_path}/{i}/{database_path}", image_path,f"{output_path}/{i}",os.path.join(root2, file2))
             print("***************")
             print("***************")
             print("***************")
@@ -87,13 +87,13 @@ def main():
             print("***************")
             print("***************")
             print("***************")
-            # a = count_subdirectories(f"{output_path}/{i}")
-            # if a >= 2:
-            #     image_undistorter(image_path, f"{output_path}/{i}/{a-1}", f"{output_path}/{i}/undistorted",os.path.join(root2, file2))
-            # else:
-            #     image_undistorter(image_path, f"{output_path}/{i}/0", f"{output_path}/{i}/undistorted", os.path.join(root2, file2))
-            # convert_colmap_bin_to_txt(f"{output_path}/{i}/undistorted/sparse/0", f"{output_path}/{i}/undistorted")
-            # export_model_to_ply(f"{output_path}/{i}/undistorted/sparse/0", f"{output_ply}/{i}.ply")
+            a = count_subdirectories(f"{output_path}/{i}")
+            if a >= 2:
+                image_undistorter(image_path, f"{output_path}/{i}/{a-1}", f"{output_path}/{i}/undistorted",os.path.join(root2, file2))
+            else:
+                image_undistorter(image_path, f"{output_path}/{i}/0", f"{output_path}/{i}/undistorted", os.path.join(root2, file2))
+            convert_colmap_bin_to_txt(f"{output_path}/{i}/undistorted/sparse/0", f"{output_path}/{i}/undistorted")
+            export_model_to_ply(f"{output_path}/{i}/undistorted/sparse/0", f"{output_ply}/{i}.ply")
             
             i+=1
 
