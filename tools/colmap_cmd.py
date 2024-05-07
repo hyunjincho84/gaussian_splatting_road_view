@@ -10,10 +10,11 @@ def run_colmap_command_with_logging(cmd):
         proc.wait()
         return proc.returncode
 
-def feature_extractor(database_path, image_path):
+def feature_extractor(database_path, image_path,image_list_path):
     cmd = ['colmap', 'feature_extractor',
            '--database_path', database_path,
-           '--image_path', image_path]
+           '--image_path', image_path,
+            '--image_list_path', image_list_path]
     if run_colmap_command_with_logging(cmd) != 0:
         print("Error in feature extraction")
 
@@ -44,17 +45,27 @@ def export_model_to_ply(input_path, output_path):
     if run_colmap_command_with_logging(cmd) != 0:
         print("Error in exporting model to PLY")
 
-def image_undistorter(image_path, input_path, output_path):
+def image_undistorter(image_path, input_path, output_path,image_list_path):
     cmd = ['mkdir', output_path]
     run_colmap_command_with_logging(cmd)
-    cmd =['colmap', 'image_undistorter',
+    cmd = ['colmap', 'image_undistorter',
      '--image_path', image_path,
      '--input_path', input_path,
-     '--output_path', output_path]
+     '--output_path', output_path,
+      '--image_list_path', image_list_path]
 
 
     if run_colmap_command_with_logging(cmd) != 0:
         print("Error in exporting undistorted")
+    
+    cmd = ['mkdir', f"{output_path}/sparse/0"]
+    run_colmap_command_with_logging(cmd)
+    cmd = ['mv', f"{output_path}/sparse/cameras.bin", f"{output_path}/sparse/0"]
+    run_colmap_command_with_logging(cmd)
+    cmd = ['mv', f"{output_path}/sparse/images.bin", f"{output_path}/sparse/0"]
+    run_colmap_command_with_logging(cmd)
+    cmd = ['mv', f"{output_path}/sparse/points3D.bin", f"{output_path}/sparse/0"]
+    run_colmap_command_with_logging(cmd)
 
 
 def convert_colmap_bin_to_txt(input_folder, output_folder):
