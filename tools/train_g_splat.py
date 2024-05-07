@@ -16,6 +16,6 @@ def activate_conda():
         print("Error in feature extraction")
     
 def construct_gaussian(input):
-    cmd = ['python', '../gaussian-splatting/train.py', '-s', input]#, '--output_name', output] 
+    cmd = ['python', '/home/mrlab/gaussian-splatting/train.py', '-s', input]#, '--output_name', output] 
     if run_colmap_command_with_logging(cmd) != 0:
         print("Error in feature extraction")

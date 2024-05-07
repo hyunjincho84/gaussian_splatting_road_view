@@ -24,9 +24,9 @@ def vid_to_img(vid_path, save_path):
             cv2.imwrite(filename, frame)
             frame_count += 1
             j += 1
-            if j > 300:
-                print(f"총 {frame_count}개의 프레임을 저장했습니다.")
-                break
+            # if j > 300:
+            #     print(f"총 {frame_count}개의 프레임을 저장했습니다.")
+            #     break
 
         i += 1
 
